@@ -1,0 +1,11 @@
+{
+	"name": "TinySensor",
+	"version": "0.1.0",
+
+	"build": {
+		"includeDir": "include",
+		"srcDir": "src"
+	},
+
+	"$schema": "https://raw.githubusercontent.com/platformio/platformio-core/develop/platformio/assets/schema/library.json"
+}
