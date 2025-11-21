@@ -3,11 +3,7 @@
 #ifndef TYS_GPIO_INCLUDE
 #define TYS_GPIO_INCLUDE
 
-#if __has_include(<env.h>)
-#include <env.h>
-#elif __has_include("env.h")
-#include "env.h"
-#endif
+#include "tys/core.h"
 
 #include <stdint.h>
 #include <avr/io.h>
