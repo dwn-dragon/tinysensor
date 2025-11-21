@@ -100,3 +100,10 @@ uint8_t i2c::read() {
 
 	return b;
 }
+
+void i2c::flush(bool Input, bool Output) {
+	if (Input)
+		_in_head = 0, _in_tail = 0;
+	if (Output)
+		_out_head = 0, _out_tail = 0;
+}

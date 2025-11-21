@@ -17,6 +17,8 @@ namespace i2c
 	void write(uint8_t byte);
 	uint8_t read();
 
+	void flush(bool Input, bool Output);
+
 }
 
 #endif	//	Include guard
