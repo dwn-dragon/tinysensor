@@ -36,9 +36,9 @@ namespace i2c_back
 	static inline addr_res_t ev_check_address(uint8_t Address, bool Write, uint8_t Raw);
 
 	//	Moves a byte from the back layer to the front layer
-	static inline void ev_push_byte(uint8_t& Byte);
+	static inline void ev_push_byte(uint8_t Byte);
 	//	Moves a byte from the front layer to the back layer
-	static inline void ev_get_byte(uint8_t& Byte);
+	static inline uint8_t ev_get_byte();
 
 }
 

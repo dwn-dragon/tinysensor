@@ -14,7 +14,7 @@
 //	USISR is often changed to the same value, it can wrapped in a utility function
 //	TODO: Use stop condition
 //	Add some additional behaviour to use the stop flag to avoid issues
-	
+
 //
 //	COSTANTS
 //
@@ -36,8 +36,8 @@ enum _state_t : uint8_t
 };
 
 //	ISR vectors
-#define VEC_I2C_START		USI_START_vect
-#define VEC_I2C_OVERFLOW	USI_OVF_vect
+#define I2C_VEC_START		USI_START_vect
+#define I2C_VEC_OVERFLOW	USI_OVF_vect
 
 //	Registers
 #define I2C_REG_DIR	DDRB
@@ -182,7 +182,7 @@ static inline void _raw_read_data() {
 //	INTERRUPT SERVICE ROUTINES
 //
 
-ISR(VEC_I2C_START)
+ISR(I2C_VEC_START)
 {
 	//	TODO: Check SDA line
 	//	Make sure that the SDA line doesnt go back up without the SCL going down
@@ -218,7 +218,7 @@ ISR(VEC_I2C_START)
 		(0 << USICNT3) | (0 << USICNT2) | (0 << USICNT1) | (0 << USICNT0);
 }
 
-ISR(VEC_I2C_OVERFLOW)
+ISR(I2C_VEC_OVERFLOW)
 {
 	//	TODO: Add dead time processing
 	//	Between reads and writes, there's a lot of dead time
@@ -232,7 +232,7 @@ ISR(VEC_I2C_OVERFLOW)
 		//	checks the address and either acknowledges it or goes back to idle
 		uint8_t b = USIDR;
 		//	allows the user to decide what to do with the address
-		auto res = i2c_back::ev_check_address(b >> 1, b & 0x01, b);
+		auto res = (uint8_t)i2c_back::ev_check_address(b >> 1, b & 0x01, b);
 		if (res & i2c_back::ADDR_IS_MATCH) {
 			//	valid address
 			_raw_write_ack();
@@ -268,8 +268,7 @@ ISR(VEC_I2C_OVERFLOW)
 	case ST_WOP_WRITE_DATA: {
 		//	sends the next byte to the master
 		//	fetches the new byte
-		uint8_t d = 0;
-		i2c_back::ev_get_byte(d);
+		uint8_t d = i2c_back::ev_get_byte();
 		//	writes the byte
 		_raw_write_data(d);
 		_state = ST_WOP_READ_ACK;
@@ -292,8 +291,9 @@ ISR(VEC_I2C_OVERFLOW)
 
     case ST_ROP_WRITE_ACK: {
 		//	sends an ACK after receiving the data
+		//	TODO: Find out why USIBR is not correct
 		//	buffers data
-		uint8_t d = USIBR;
+		uint8_t d = USIDR;
 		//	sends ack
 		_raw_write_ack();
 		_state = ST_ROP_READ_DATA;
@@ -303,5 +303,6 @@ ISR(VEC_I2C_OVERFLOW)
 	}
 	}
 }
+
 
 #endif	//	Include guard

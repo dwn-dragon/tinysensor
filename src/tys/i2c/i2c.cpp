@@ -45,22 +45,22 @@ inline i2c_back::addr_res_t i2c_back::ev_check_address(uint8_t Address, bool Wri
 	return res;
 }
 
-inline void i2c_back::ev_get_byte(uint8_t& Byte) {
+inline uint8_t i2c_back::ev_get_byte() {
 	//	buffers the index
 	//	avoids a second load when its incremented
 	uint8_t _t = _out_tail;
 
 	//	buffer is currently empty
 	if (_t == _out_head)
-		Byte = 0x0;
+		return 0xff;
 	else {
 		//	gets the byte, updates index and returns value
 		uint8_t d = _out_buff[_t];
 		_out_tail = (_t + 1) & _out_mask;
-		Byte = d;
+		return d;
 	}
 }
-inline void i2c_back::ev_push_byte(uint8_t& Data) {
+inline void i2c_back::ev_push_byte(uint8_t Data) {
 	//	buffers the index
 	//	avoids a second load when its incremented
 	uint8_t _h = _in_head;
