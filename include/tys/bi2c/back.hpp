@@ -28,6 +28,9 @@ namespace i2c_back
 
 	static inline void init();
 
+	static inline bool has_stop();
+	static inline void clear_stop();
+
 	//	MASK
 	//	Event methods that the BACK layer calls to let the FRONT layer act
 

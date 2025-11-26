@@ -84,8 +84,16 @@ inline void i2c_back::init() {
 			//	clears the start and overflow interrupts
 			(1 << USISIF) | (1 << USIOIF) | 
 			//	clears the other two flags
-			(1 << USIPF) | (0 << USIDC);
+			(0 << USIPF) | (0 << USIDC);
 	SREG = oldSREG;
+}
+
+
+inline bool i2c_back::has_stop() {
+	return USISR & (1 << USISIF);
+}
+inline void i2c_back::clear_stop() {
+	USISR |= (1 << USISIF);
 }
 
 //	
@@ -109,7 +117,7 @@ static inline void _raw_set_idle() {
 		//	clears the start and overflow interrupts
 		(1 << USISIF) | (1 << USIOIF) | 
 		//	clears the other two flags
-		(1 << USIPF) | (0 << USIDC);
+		(0 << USIPF) | (0 << USIDC);
 }
 
 static inline void _raw_write_ack() {
@@ -124,7 +132,7 @@ static inline void _raw_write_ack() {
 		//	releases SCL line from overflow
 		(1 << USIOIF) |
 		//	clears the other flags
-		(1 << USIPF) | (0 << USIDC) |
+		(0 << USIPF) | (0 << USIDC) |
 		//	sets counter to 14, overflows after 1 bit (2 clocks)
 		(1 << USICNT3) | (1 << USICNT2) | (1 << USICNT1) | (0 << USICNT0);
 }
@@ -140,7 +148,7 @@ static inline void _raw_read_ack() {
 		//	releases SCL line from overflow
 		(1 << USIOIF) |
 		//	clears the other flags
-		(1 << USIPF) | (0 << USIDC) |
+		(0 << USIPF) | (0 << USIDC) |
 		//	sets counter to 14, overflows after 1 bit (2 clocks)
 		(1 << USICNT3) | (1 << USICNT2) | (1 << USICNT1) | (0 << USICNT0);
 }
@@ -157,7 +165,7 @@ static inline void _raw_write_data(uint8_t b) {
 		//	releases SCL line from overflow
 		(1 << USIOIF) |
 		//	clears the other flags
-		(1 << USIPF) | (0 << USIDC) |
+		(0 << USIPF) | (0 << USIDC) |
 		//	sets counter to 0, overflows after 8 bit (16 clocks)
 		(0 << USICNT3) | (0 << USICNT2) | (0 << USICNT1) | (0 << USICNT0);
 }
@@ -173,7 +181,7 @@ static inline void _raw_read_data() {
 		//	releases SCL line from overflow
 		(1 << USIOIF) |
 		//	clears the other flags
-		(1 << USIPF) | (0 << USIDC) |
+		(0 << USIPF) | (0 << USIDC) |
 		//	sets counter to 0, overflows after 8 bit (16 clocks)
 		(0 << USICNT3) | (0 << USICNT2) | (0 << USICNT1) | (0 << USICNT0);
 }
@@ -213,7 +221,7 @@ ISR(I2C_VEC_START)
 		//	releases the SCL line
 		(1 << USISIF) | (1 << USIOIF) |
 		//	clears the other flags
-		(1 << USIPF) | (0 << USIDC) |
+		(0 << USIPF) | (0 << USIDC) |
 		//	sets counter to 0, overflows after 8 bit (16 clocks)
 		(0 << USICNT3) | (0 << USICNT2) | (0 << USICNT1) | (0 << USICNT0);
 }
