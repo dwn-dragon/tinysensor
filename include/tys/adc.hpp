@@ -10,7 +10,7 @@
 namespace adc
 {
 
-	enum class PRESCALER : uint8_t
+	enum class prescaler : uint8_t
 	{
 		F002 = 0x00 | (0 << ADPS2) | (0 << ADPS1) | (1 << ADPS0),
 		F004 = 0x00 | (0 << ADPS2) | (1 << ADPS1) | (0 << ADPS0),
@@ -21,7 +21,7 @@ namespace adc
 		F128 = 0x00 | (1 << ADPS2) | (1 << ADPS1) | (1 << ADPS0)
 	};
 
-	enum class VREF : uint8_t
+	enum class vref : uint8_t
 	{
 		VCC		= 0x00 | (0 << REFS2) | (0 << REFS1) | (0 << REFS0),
 		AREF	= 0x00 | (0 << REFS2) | (0 << REFS1) | (1 << REFS0),
@@ -31,7 +31,7 @@ namespace adc
 		V256CAP	= 0x00 | (1 << REFS2) | (1 << REFS1) | (1 << REFS0),
 	};
 
-	enum class INPUT : uint8_t
+	enum class input : uint8_t
 	{
 		SINGLE_P5	= 0x00 | (0 << MUX3) |(0 << MUX2) | (0 << MUX1) | (0 << MUX0),
 		SINGLE_P2	= 0x00 | (0 << MUX3) |(0 << MUX2) | (0 << MUX1) | (1 << MUX0),
@@ -55,11 +55,11 @@ namespace adc
 	static inline void interrupt_enable();
 	static inline void interrupt_disable();
 
-	static inline void set_prescaler(PRESCALER Value);
+	static inline void set_prescaler(prescaler Value);
 
-	static inline void set_vref(VREF Value);
+	static inline void set_vref(vref Value);
 
-	static inline void set_input(INPUT Value);
+	static inline void set_input(input Value);
 
 }
 
@@ -77,21 +77,21 @@ inline void adc::interrupt_disable() {
 	ADCSRA &= ~(1 << ADIE);
 }
 
-inline void adc::set_prescaler(PRESCALER Value) {
+inline void adc::set_prescaler(prescaler Value) {
 	uint8_t _tmp = ADCSRA;
 	_tmp &= ~((1 << ADPS2) | (1 << ADPS1) | (1 << ADPS0));
 	_tmp |= (uint8_t)Value;
 	ADCSRA = _tmp;
 }
 
-inline void adc::set_vref(VREF Value) {
+inline void adc::set_vref(vref Value) {
 	uint8_t _tmp = ADMUX;
 	_tmp &= ~((1 << REFS2) | (1 << REFS1) | (1 << REFS0));
 	_tmp |= (uint8_t)Value;
 	ADMUX = _tmp;
 }
 
-inline void adc::set_input(INPUT Value) {
+inline void adc::set_input(input Value) {
 	uint8_t _tmp = ADMUX;
 	_tmp &= ~((1 << MUX3) | (1 << MUX2) | (1 << MUX1) | (1 << MUX0));
 	_tmp |= (uint8_t)Value;
