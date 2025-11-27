@@ -39,7 +39,7 @@ namespace adc
 		SINGLE_P3	= 0x00 | (0 << MUX3) |(0 << MUX2) | (1 << MUX1) | (1 << MUX0),
 
 		DIFF_P33_01	= 0x00 | (0 << MUX3) |(1 << MUX2) | (0 << MUX1) | (0 << MUX0),
-		DIFF_P34_20	= 0x00 | (0 << MUX3) |(1 << MUX2) | (0 << MUX1) | (1 << MUX0),
+		DIFF_P33_20	= 0x00 | (0 << MUX3) |(1 << MUX2) | (0 << MUX1) | (1 << MUX0),
 		DIFF_P34_01	= 0x00 | (0 << MUX3) |(1 << MUX2) | (1 << MUX1) | (0 << MUX0),
 		DIFF_P34_20	= 0x00 | (0 << MUX3) |(1 << MUX2) | (1 << MUX1) | (1 << MUX0),
 		
